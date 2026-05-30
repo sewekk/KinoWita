@@ -1,24 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl" class="h-full">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}KinoWita{% endblock %}</title>
+        
+        <script src="https://cdn.tailwindcss.com"></script>
+        
+        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+        
+        {% block stylesheets %}{% endblock %}
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
 
         {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
         {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+            <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
+            <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+            <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
         {% endif %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body class="bg-stone-50 text-stone-900 font-sans antialiased h-full flex flex-col">
+        
+        <nav class="bg-white border-b-2 border-stone-900 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    
+                    <a href="{{ path('app_home') }}" class="text-md font-black tracking-wider text-stone-900 hover:text-stone-600 uppercase transition-colors">
+                        Merito Kino Wita <span class="text-stone-400">/</span> System
+                    </a>
+                    
+                    <div class="flex items-center h-full">
+                        {% if app.user %}
+                            <div class="hidden md:flex items-center space-x-1 h-full mr-6">
+                                {% if is_granted('ROLE_USER') %}
+                                    <a href="{{ path('app_dashboard') }}" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 px-3 py-2 transition-colors">
+                                        Moje konto
+                                    </a>
+                                {% endif %}
+                                {% if is_granted('ROLE_STAFF') %}
+                                    <a href="{{ path('app_staff_dashboard') }}" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 px-3 py-2 transition-colors border-l border-stone-200">
+                                        Panel pracownika
+                                    </a>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('app_admin_dashboard') }}" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 px-3 py-2 transition-colors border-l border-stone-200">
+                                        Zarządzanie systemem
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                            <div class="flex items-center space-x-4 border-l border-stone-900 pl-6 h-full">
+                                <span class="text-xs font-mono tracking-tight text-stone-500 uppercase font-bold">
+                                    {{ app.user.firstName }} {{ app.user.lastName }}
+                                </span>
+                                <a href="{{ path('app_logout') }}" class="btn-secondary !py-1.5 !px-3 text-xs">
+                                    Wyloguj
+                                </a>
+                            </div>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="btn-primary !py-2 !px-4 text-xs">
+                                Zaloguj się
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+
+        {% if app.flashes is not empty %}
+            <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mt-6 space-y-2">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="p-4 text-sm font-mono border-2 {{ label == 'success' ? 'bg-emerald-50 border-emerald-900 text-emerald-900' : 'bg-red-50 border-red-900 text-red-900' }}">
+                            <span class="font-bold">[{{ label|upper }}]</span> {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+            {% block body %}{% endblock %}
+        </main>
+
+        <footer class="bg-white border-t border-stone-200 py-6 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-stone-500">
+                <div class="font-bold">&copy; {{ 'now'|date('Y') }} WSB Merito</div>
+                <div class="mt-2 sm:mt-0 uppercase tracking-widest text-stone-400 font-bold text-right text-[10px] md:text-xs">
+                    Seweryn Filipkowski <span class="text-stone-300">|</span> Wiktor Gronostaj <span class="text-stone-300">|</span> Adrian Wojciechowski
+                </div>
+            </div>
+        </footer>
+
     </body>
 </html>
