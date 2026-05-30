@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edytuj użytkownika — Admin{% endblock %}
+
+{% block body %}
+<div class="border-b-2 border-stone-900 pb-6 mb-8">
+    <h1 class="section-header">Edytuj użytkownika</h1>
+    <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+        {{ user.email }} &nbsp;·&nbsp; <a href="{{ path('app_admin_users') }}" class="hover:text-stone-900">← Wróć do listy</a>
+    </p>
+</div>
+
+<div class="b-card max-w-xl">
+    {{ form_start(form, {attr: {class: 'space-y-5', 'data-controller': 'role-cinema'}}) }}
+
+        <div>
+            {{ form_label(form.firstName) }}
+            {{ form_widget(form.firstName) }}
+            {{ form_errors(form.firstName) }}
+        </div>
+        <div>
+            {{ form_label(form.lastName) }}
+            {{ form_widget(form.lastName) }}
+            {{ form_errors(form.lastName) }}
+        </div>
+        <div>
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+        </div>
+        <div>
+            {{ form_label(form.plainPassword) }}
+            {{ form_widget(form.plainPassword) }}
+            {{ form_errors(form.plainPassword) }}
+        </div>
+        <div>
+            {{ form_label(form.roles) }}
+            {{ form_widget(form.roles) }}
+            {{ form_errors(form.roles) }}
+        </div>
+        {{ form_row(form.assignedCinema) }}
+
+        <div class="pt-4 border-t border-stone-200 flex gap-3">
+            <button type="submit" class="btn-primary">Zapisz zmiany</button>
+            <a href="{{ path('app_admin_users') }}" class="btn-secondary">Anuluj</a>
+        </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}
