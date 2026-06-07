@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Repertuar — {{ cinema.name }}{% endblock %}
+
+{% block body %}
+<div class="max-w-7xl mx-auto">
+
+    <div class="border-b-2 border-stone-900 pb-8 mb-12">
+        <h1 class="text-4xl font-black uppercase tracking-tight text-stone-900 mb-2">
+            Repertuar
+        </h1>
+
+        <p class="text-stone-500 font-mono text-sm uppercase tracking-wider">
+            {{ cinema.name }} — {{ cinema.city }}, {{ cinema.address }}
+        </p>
+    </div>
+    <form method="get" class="mb-8 bg-white border-2 border-stone-900 p-4 flex gap-3">
+        <input
+            type="text"
+            name="q"
+            value="{{ search }}"
+            placeholder="Wyszukaj film..."
+            class="form-input"
+        >
+        <input
+            type="date"
+            name="date"
+            value="{{ selectedDate }}"
+            class="form-input"
+        >
+
+        <select name="category" class="form-input">
+            <option value="">Wszystkie kategorie</option>
+
+            {% for value, label in categories %}
+                <option value="{{ value }}" {{ selectedCategory == value ? 'selected' : '' }}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-primary">
+            Szukaj
+        </button>
+
+        {% if search or selectedCategory %}
+            <a href="{{ path('app_cinema_repertoire', {id: cinema.id}) }}" class="btn-secondary">
+                Wyczyść
+            </a>
+        {% endif %}
+    </form>
+    
+
+    {% if movieGroups is empty %}
+        <div class="border-2 border-dashed border-stone-300 p-12 text-center">
+            <p class="font-mono text-sm text-stone-500 uppercase tracking-widest">
+                [ Brak dostępnych seansów dla tej placówki ]
+            </p>
+        </div>
+    {% else %}
+        <div class="space-y-8">
+            {% for group in movieGroups %}
+                {% set movie = group.movie %}
+
+                <div class="bg-white border-2 border-stone-900 p-6">
+                    <div class="flex items-start justify-between gap-6 border-b border-stone-200 pb-5 mb-5">
+                        <div>
+                            <h2 class="text-2xl font-black uppercase tracking-tight text-stone-900">
+                                {{ movie.name }}
+                            </h2>
+
+                            <p class="font-mono text-xs text-stone-500 uppercase tracking-wider mt-1">
+                                Kategoria wiekowa: <span class="font-bold text-stone-900">{{ movie.ageCategory }}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3">
+                        {% for screening in group.screenings %}
+                            <a href="#" class="border-2 border-stone-900 px-4 py-3 hover:bg-stone-900 hover:text-white transition-colors">
+                                <span class="block font-mono text-xs font-bold uppercase tracking-wider">
+                                    {{ screening.startsAt|date('d.m.Y') }}
+                                </span>
+                                <span class="block text-lg font-black">
+                                    {{ screening.startsAt|date('H:i') }}
+                                </span>
+                                <span class="block font-mono text-xs mt-1">
+                                    {{ screening.hall.name }}
+                                </span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="mt-8">
+        <a href="/" class="btn-secondary">
+            Wróć do placówek
+        </a>
+    </div>
+
+</div>
+{% endblock %}

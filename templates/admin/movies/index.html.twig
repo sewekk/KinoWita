@@ -27,6 +27,7 @@
                 <tr class="border-b-2 border-stone-900 bg-stone-50">
                     <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">ID</th>
                     <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Nazwa</th>
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Kategoria</th>
                     <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Kategoria wiekowa</th>
                     <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Status</th>
                     <th class="px-6 py-3"></th>
@@ -37,6 +38,7 @@
                     <tr class="border-b border-stone-200 hover:bg-stone-50 transition-colors">
                         <td class="px-6 py-4 font-mono text-xs text-stone-400">#{{ movie.id }}</td>
                         <td class="px-6 py-4 font-semibold">{{ movie.name }}</td>
+                        <td class="px-6 py-4 font-semibold">{{ movie.category.label }}</td>
                         <td class="px-6 py-4 font-mono text-xs">{{ movie.ageCategory }}</td>
                         <td class="px-6 py-4">
                             {% if movie.active %}

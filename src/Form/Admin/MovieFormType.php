@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Enum\MovieCategory;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class MovieFormType extends AbstractType
 {
@@ -16,6 +18,11 @@ class MovieFormType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nazwa filmu',
+            ])
+            ->add('category', ChoiceType::class, [
+                'label' => 'Kategoria filmu',
+                'choices' => MovieCategory::choices(),
+                'placeholder' => 'Wybierz kategorię',
             ])
             ->add('ageCategory', TextType::class, [
                 'label' => 'Kategoria wiekowa',
@@ -26,9 +33,7 @@ class MovieFormType extends AbstractType
             ->add('isActive', CheckboxType::class, [
                 'label' => 'Film aktywny',
                 'required' => false,
-                ''
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
