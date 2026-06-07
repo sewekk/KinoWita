@@ -63,11 +63,11 @@ class AppFixtures extends Fixture
             ],
             [
                 'email' => 'pracownik@wsb.pl',
-                'password' => 'qwery', 
+                'password' => 'qwerty', 
                 'firstName' => 'Anna',
                 'lastName' => 'Employee',
                 'roles' => ['ROLE_STAFF'],
-                'cinema' => 'Poznań' 
+                'cinema' => 1,
             ],
             [
                 'email' => 'klient@wsb.pl',
