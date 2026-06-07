@@ -77,7 +77,7 @@
 
                     <div class="flex flex-wrap gap-3">
                         {% for screening in group.screenings %}
-                            <a href="#" class="border-2 border-stone-900 px-4 py-3 hover:bg-stone-900 hover:text-white transition-colors">
+                            <a href="{{ path('app_booking_screening', {id: screening.id}) }}" class="border-2 border-stone-900 px-4 py-3 hover:bg-stone-900 hover:text-white transition-colors">
                                 <span class="block font-mono text-xs font-bold uppercase tracking-wider">
                                     {{ screening.startsAt|date('d.m.Y') }}
                                 </span>

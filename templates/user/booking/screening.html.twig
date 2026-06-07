@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rezerwacja — {{ screening.movie.name }}{% endblock %}
+
+{% block body %}
+<div class="max-w-5xl mx-auto">
+
+    <div class="border-b-2 border-stone-900 pb-8 mb-8">
+        <h1 class="text-4xl font-black uppercase tracking-tight text-stone-900 mb-2">
+            Wybór miejsc
+        </h1>
+
+        <p class="text-stone-500 font-mono text-sm uppercase tracking-wider">
+            {{ screening.movie.name }} — {{ screening.startsAt|date('d.m.Y H:i') }}
+        </p>
+
+        <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+            {{ screening.cinema.name }} / {{ hall.name }}
+        </p>
+    </div>
+
+    {% if not canBook %}
+        <div class="b-card mb-8 border-red-700 bg-red-50">
+            <p class="text-sm font-mono font-bold uppercase tracking-wider text-red-800 mb-4">
+                Aby zarezerwować miejsce, zaloguj się lub załóż konto w systemie.
+            </p>
+
+            <div class="flex gap-3">
+                <a href="{{ path('app_login') }}" class="btn-primary">
+                    Zaloguj się
+                </a>
+
+                <a href="{{ path('app_register') }}" class="btn-secondary">
+                    Załóż konto
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="b-card mb-8">
+        <div class="text-center border-2 border-stone-900 py-3 mb-8 font-mono text-xs font-bold uppercase tracking-widest bg-stone-900 text-white">
+            Ekran
+        </div>
+
+        <form method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('book_screening_' ~ screening.id) }}">
+
+            <div class="space-y-3">
+                {% for row in 1..hall.rowsCount %}
+                    <div class="flex items-center gap-3">
+                        <div class="w-16 font-mono text-xs font-bold uppercase text-stone-500">
+                            Rząd {{ row }}
+                        </div>
+
+                        <div
+                            class="grid gap-2 flex-1"
+                            style="grid-template-columns: repeat({{ hall.seatsPerRow }}, minmax(2.5rem, 1fr));"
+                        >
+                            {% for seat in 1..hall.seatsPerRow %}
+                                {% set isReserved = reservedSeats[row] is defined and reservedSeats[row][seat] is defined %}
+                                {% set isDisabled = isReserved or not canBook %}
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="seats[]"
+                                        value="{{ row }}:{{ seat }}"
+                                        class="hidden peer"
+                                        {{ isDisabled ? 'disabled' : '' }}
+                                    >
+
+                                    <span class="block text-center border-2 py-2 font-mono text-xs font-bold transition-colors
+                                        {% if isReserved %}
+                                            border-stone-300 bg-stone-200 text-stone-400 cursor-not-allowed
+                                        {% elseif not canBook %}
+                                            border-stone-300 bg-stone-50 text-stone-400 cursor-not-allowed
+                                        {% else %}
+                                            border-stone-900 cursor-pointer hover:bg-stone-100 peer-checked:bg-stone-900 peer-checked:text-white
+                                        {% endif %}
+                                    ">
+                                        {{ seat }}
+                                    </span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt-8">
+                {% if canBook %}
+                    <button type="submit" class="btn-primary">
+                        Zarezerwuj wybrane miejsca
+                    </button>
+                {% else %}
+                    <p class="font-mono text-xs uppercase tracking-wider text-stone-500">
+                        Wybór miejsc będzie dostępny po zalogowaniu.
+                    </p>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    <div class="flex gap-3">
+        <a href="{{ path('app_cinema_repertoire', {id: screening.cinema.id}) }}" class="btn-secondary">
+            Wróć do repertuaru
+        </a>
+    </div>
+
+</div>
+{% endblock %}

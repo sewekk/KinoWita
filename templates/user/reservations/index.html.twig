@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Moje rezerwacje — KinoWita{% endblock %}
+
+{% block body %}
+<div class="max-w-5xl mx-auto my-6">
+
+    <div class="border-b-2 border-stone-900 pb-6 mb-8">
+        <h1 class="section-header">Moje rezerwacje</h1>
+        <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+            Lista Twoich zarezerwowanych seansów
+        </p>
+    </div>
+
+    {% if reservations is empty %}
+        <div class="b-card text-center py-12 text-stone-400 font-mono text-sm">
+            Nie masz jeszcze żadnych rezerwacji.
+        </div>
+    {% else %}
+        <div class="space-y-6">
+            {% for reservation in reservations %}
+                {% set screening = reservation.screening %}
+                {% set seats = reservationSeats[reservation.id] ?? [] %}
+
+                <div class="b-card">
+                    <div class="flex items-start justify-between gap-6 border-b border-stone-200 pb-5 mb-5">
+                        <div>
+                            <h2 class="text-2xl font-black uppercase tracking-tight text-stone-900">
+                                {{ screening.movie.name }}
+                            </h2>
+
+                            <p class="font-mono text-xs text-stone-500 uppercase tracking-wider mt-1">
+                                {{ screening.startsAt|date('d.m.Y H:i') }} — {{ screening.cinema.name }} / {{ screening.hall.name }}
+                            </p>
+                        </div>
+
+                        <span class="inline-block px-2 py-0.5 text-xs font-mono font-bold uppercase bg-stone-900 text-white">
+                            {{ reservation.status }}
+                        </span>
+                    </div>
+
+                    <div class="font-mono text-xs uppercase tracking-wider text-stone-600">
+                        <span class="font-bold text-stone-900">Miejsca:</span>
+
+                        {% for seat in seats %}
+                            <span class="inline-block border border-stone-900 px-2 py-1 ml-1">
+                                Rząd {{ seat.rowNumber }}, miejsce {{ seat.seatNumber }}
+                            </span>
+                        {% endfor %}
+                    </div>
+
+                    {% if reservation.status == 'reserved' and screening.startsAt > date() %}
+                        <form
+                            method="post"
+                            action="{{ path('app_user_reservations_cancel', {id: reservation.id}) }}"
+                            class="mt-5"
+                            onsubmit="return confirm('Czy na pewno chcesz anulować tę rezerwację?')"
+                        >
+                            <input type="hidden" name="_token" value="{{ csrf_token('cancel_reservation_' ~ reservation.id) }}">
+
+                            <button type="submit" class="text-xs font-mono font-bold uppercase text-red-700 hover:text-red-900 transition-colors">
+                                Anuluj rezerwację
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="mt-8">
+        <a href="{{ path('app_dashboard') }}" class="btn-secondary">
+            Wróć do panelu
+        </a>
+    </div>
+
+</div>
+{% endblock %}

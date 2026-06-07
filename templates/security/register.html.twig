@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rejestracja — KinoWita{% endblock %}
+
+{% block body %}
+<div class="max-w-xl mx-auto my-10">
+
+    <div class="border-b-2 border-stone-900 pb-6 mb-8">
+        <h1 class="section-header">Rejestracja</h1>
+        <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+            Załóż konto klienta, aby móc rezerwować miejsca.
+        </p>
+    </div>
+
+    <div class="b-card">
+        {{ form_start(form) }}
+
+            <div class="space-y-5">
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.plainPassword.first) }}
+                {{ form_row(form.plainPassword.second) }}
+            </div>
+
+            <div class="flex items-center gap-3 mt-8">
+                <button type="submit" class="btn-primary">
+                    Załóż konto
+                </button>
+
+                <a href="{{ path('app_login') }}" class="btn-secondary">
+                    Mam już konto
+                </a>
+            </div>
+
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{% endblock %}
