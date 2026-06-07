@@ -23,10 +23,10 @@ class Screening
     private ?Cinema $cinema = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false)] 
     private ?CinemaHall $hall = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $startsAt = null;
 
     #[ORM\Column]

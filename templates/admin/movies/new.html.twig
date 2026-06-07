@@ -29,6 +29,20 @@
             </div>
 
             <div>
+                {{ form_label(form.category, null, {
+                    label_attr: {
+                        class: 'block font-mono text-xs uppercase tracking-widest text-stone-500 mb-2'
+                    }
+                }) }}
+                {{ form_widget(form.category, {
+                    attr: {
+                        class: 'w-full border-2 border-stone-900 px-4 py-2 text-sm'
+                    }
+                }) }}
+                {{ form_errors(form.category) }}
+            </div>
+
+            <div>
                 {{ form_label(form.ageCategory, null, {
                     label_attr: {
                         class: 'block font-mono text-xs uppercase tracking-widest text-stone-500 mb-2'
