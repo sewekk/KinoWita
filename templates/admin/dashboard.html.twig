@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panel Administratora — KinoWita{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto my-6">
+
+    <div class="border-b-2 border-stone-900 pb-6 mb-8">
+        <h1 class="section-header">Panel Administratora</h1>
+        <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+            Witaj, {{ app.user.firstName }}. Jesteś zalogowany jako: <span class="font-bold text-stone-900">{{ app.user.email }}</span>
+        </p>
+    </div>
+
+    <div class="b-card">
+
+        <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-stone-400 border-b border-stone-200 pb-3 mb-6">
+            [ Zarządzanie siecią kin ]
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <a href="{{ path('app_admin_users') }}" class="border-2 border-stone-900 p-6 flex flex-col justify-between transition-colors hover:bg-stone-50 group">
+                <div>
+                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-stone-500 mb-1">
+                        Moduł 01 —
+                    </span>
+                    <span class="block text-lg font-black uppercase tracking-tight text-stone-900 group-hover:text-stone-600">
+                        Użytkownicy
+                    </span>
+                </div>
+                <p class="text-xs font-mono text-stone-600 mt-4 pt-4 border-t border-stone-100">
+                    Zarządzaj kontami użytkowników, przypisuj role i uprawnienia.
+                </p>
+            </a>
+
+            <a href="#" class="border-2 border-stone-900 p-6 flex flex-col justify-between transition-colors hover:bg-stone-50 group">
+                <div>
+                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-stone-500 mb-1">
+                        Moduł 02 —
+                    </span>
+                    <span class="block text-lg font-black uppercase tracking-tight text-stone-900 group-hover:text-stone-600">
+                        Lokalizacje kin
+                    </span>
+                </div>
+                <p class="text-xs font-mono text-stone-600 mt-4 pt-4 border-t border-stone-100">
+                    Dodawaj i edytuj placówki kinowe — miasto, adres, godziny otwarcia.
+                </p>
+            </a>
+
+            <a href="#" class="border-2 border-stone-900 p-6 flex flex-col justify-between transition-colors hover:bg-stone-50 group">
+                <div>
+                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-stone-500 mb-1">
+                        Moduł 03 —
+                    </span>
+                    <span class="block text-lg font-black uppercase tracking-tight text-stone-900 group-hover:text-stone-600">
+                        Statystyki
+                    </span>
+                </div>
+                <p class="text-xs font-mono text-stone-600 mt-4 pt-4 border-t border-stone-100">
+                    Przychody, liczba rezerwacji i najpopularniejsze filmy całej sieci.
+                </p>
+            </a>
+
+            <a href="{{ path('app_logout') }}" class="border-2 border-stone-900 p-6 flex flex-col justify-between transition-colors bg-stone-900 text-white hover:bg-white hover:text-stone-900 group">
+                <div>
+                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-stone-400 mb-1">
+                        Sesja —
+                    </span>
+                    <span class="block text-lg font-black uppercase tracking-tight text-white group-hover:text-stone-900">
+                        Wyloguj
+                    </span>
+                </div>
+                <p class="text-xs font-mono text-stone-300 group-hover:text-stone-600 mt-4 pt-4 border-t border-stone-800 group-hover:border-stone-100">
+                    Zakończ bezpiecznie obecną sesję w systemie.
+                </p>
+            </a>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
