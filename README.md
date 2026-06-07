@@ -23,7 +23,8 @@ Do uruchomienia projektu potrzebne są:
 - MySQL / MariaDB
 - Symfony CLI opcjonalnie
 
-Projekt nie wymaga Node.js. Style Tailwind CSS są budowane przez Symfony TailwindBundle.
+Projekt nie wymaga Node.js ani npm. Nie należy wykonywać `npm install` ani `npm run build`.
+Frontend/assets działają przez Symfony AssetMapper, ImportMap oraz TailwindBundle.
 
 ---
 
@@ -42,28 +43,65 @@ composer install
 
 ### 3. Konfiguracja bazy danych
 
-Utwórz plik .env w głównym katalogu projektu na podstawie .env.example
+Utwórz plik `.env` w głównym katalogu projektu na podstawie `.env.example`.
 
-### 4. Utworzenie bazy danych
+Przykładowy `.env.example` dla użytkownika `root` bez hasła:
 
-```bash
-php bin/console doctrine:database:create
+```dotenv
+DATABASE_URL="mysql://root:@127.0.0.1:3306/kinowita?serverVersion=8.0.32&charset=utf8mb4"
 ```
 
-### 5. Uruchomienie migracji oraz seed danych testowych
+Wariant z hasłem:
 
-```bash
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load
+```dotenv
+DATABASE_URL="mysql://root:HASLO@127.0.0.1:3306/kinowita?serverVersion=8.0.32&charset=utf8mb4"
 ```
 
-### 6. Zbudowanie styli Tailwind CSS
+W pliku `.env` ustaw też `APP_SECRET`. Możesz wygenerować go poleceniem:
+
+```bash
+php -r "echo bin2hex(random_bytes(16)).PHP_EOL;"
+```
+
+### 4. Instalacja assetów ImportMap
+
+```bash
+php bin/console importmap:install
+```
+
+### 5. Zbudowanie styli Tailwind CSS
 
 ```bash
 php bin/console tailwind:build
 ```
 
-### 7. Uruchomienie aplikacji
+### 6. Kompilacja AssetMapper do public/assets
+
+Ten krok jest wymagany przy uruchamianiu aplikacji przez `php -S`.
+
+```bash
+php bin/console asset-map:compile
+```
+
+### 7. Utworzenie bazy danych
+
+```bash
+php bin/console doctrine:database:create
+```
+
+### 8. Uruchomienie migracji
+
+```bash
+php bin/console doctrine:migrations:migrate
+```
+
+### 9. Załadowanie danych testowych
+
+```bash
+php bin/console doctrine:fixtures:load
+```
+
+### 10. Uruchomienie aplikacji
 
 ```bash
 php -S 127.0.0.1:8000 -t public
@@ -75,18 +113,30 @@ Opcjonalnie, jeśli zainstalowany jest Symfony CLI:
 symfony server:start
 ```
 
-### 8. Pełna kolejność komend
+### Pełna kolejność komend
 
 ```bash
-    composer install
+composer install
 
-    php bin/console doctrine:database:create
-    php bin/console doctrine:migrations:migrate
-    php bin/console doctrine:fixtures:load
+php bin/console importmap:install
+php bin/console tailwind:build
+php bin/console asset-map:compile
 
-    php bin/console tailwind:build
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
 
-    php -S 127.0.0.1:8000 -t public
+php -S 127.0.0.1:8000 -t public
+```
+
+### Problemy z assetami
+
+Jeśli style albo JavaScript nie ładują się przy `php -S`, uruchom ponownie:
+
+```bash
+php bin/console tailwind:build
+php bin/console asset-map:compile
+php bin/console cache:clear
 ```
 
 ## Opis
@@ -133,7 +183,8 @@ System ról decyduje o tym, co kto widzi i może zrobić. Dostęp do sekcji `/da
 
 ## Uruchomienie
 
-Wymagane: PHP 8.2+, Composer, MariaDB/MySQL, Symfony CLI.
+Wymagane: PHP 8.2+, Composer, MariaDB/MySQL. Symfony CLI jest opcjonalny.
+Projekt nie wymaga Node.js ani npm.
 
 Instalacja zależności:
 
@@ -144,7 +195,27 @@ composer install
 Konfiguracja połączenia z bazą w `.env` (lub `.env.local`), domyślnie:
 
 ```
-DATABASE_URL="mysql://root@127.0.0.1:3306/kino?serverVersion=mariadb-10.4.32&charset=utf8mb4"
+DATABASE_URL="mysql://root:@127.0.0.1:3306/kinowita?serverVersion=8.0.32&charset=utf8mb4"
+```
+
+Wariant z hasłem:
+
+```
+DATABASE_URL="mysql://root:HASLO@127.0.0.1:3306/kinowita?serverVersion=8.0.32&charset=utf8mb4"
+```
+
+W pliku `.env` ustaw też `APP_SECRET`. Możesz wygenerować go poleceniem:
+
+```
+php -r "echo bin2hex(random_bytes(16)).PHP_EOL;"
+```
+
+Przygotowanie assetów:
+
+```
+php bin/console importmap:install
+php bin/console tailwind:build
+php bin/console asset-map:compile
 ```
 
 Utworzenie bazy, migracje i dane startowe:
@@ -155,14 +226,19 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 ```
 
-Zbudowanie styli i start serwera:
+Start serwera:
+
+```
+php -S 127.0.0.1:8000 -t public
+```
+
+Jeśli style albo JavaScript nie ładują się przy `php -S`, uruchom ponownie:
 
 ```
 php bin/console tailwind:build
-symfony server:start
+php bin/console asset-map:compile
+php bin/console cache:clear
 ```
-
-Alternatywnie `scripts/dev.sh` uruchamia budowanie Tailwinda w trybie watch razem z serwerem.
 
 Konta startowe z fixtures (hasło dla wszystkich: `qwerty`):
 
