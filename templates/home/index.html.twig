@@ -1,12 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}KinoWita{% endblock %}
+{% block title %}KinoWita - Lokalizacje {% endblock %}
 
 {% block body %}
-    <div class="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-        <div class="text-center">
-            <h1 class="text-5xl font-bold mb-4">KinoWita 🎬</h1>
-            <p class="text-gray-400 text-xl">Witaj w aplikacji kinowej</p>
-        </div>
+<div class="max-w-7xl mx-auto">
+
+    <div class="border-b-2 border-stone-900 pb-8 mb-12">
+        <h1 class="text-4xl font-black uppercase tracking-tight text-stone-900 mb-2">
+            Nasze Placówki
+        </h1>
+        <p class="text-stone-500 font-mono text-sm uppercase tracking-wider">
+            Wybierz kino w swojej okolicy i sprawdź aktualny repertuar
+        </p>
     </div>
+
+    {% if cinemas is empty %}
+        <div class="border-2 border-dashed border-stone-300 p-12 text-center">
+            <p class="font-mono text-sm text-stone-500 uppercase tracking-widest">
+                [ Brak dostępnych placówek w bazie danych ]
+            </p>
+        </div>
+    {% else %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for cinema in cinemas %}
+                <div class="bg-white border-2 border-stone-900 p-6 flex flex-col justify-between transition-colors hover:bg-stone-50">
+                    
+                    <div>
+                        <h2 class="text-xl font-black uppercase tracking-tight text-stone-900 mb-1">
+                            {{ cinema.name }}
+                        </h2>
+                        
+                        <div class="inline-block bg-stone-900 text-white text-xs font-mono font-bold uppercase tracking-widest px-2 py-0.5 mb-6">
+                            {{ cinema.city }}
+                        </div>
+
+                        <div class="space-y-3 text-xs font-mono text-stone-600 border-t border-stone-200 pt-4">
+                            <div class="flex items-start">
+                                <span class="font-bold text-stone-900 w-16 uppercase">Adres:</span>
+                                <span class="text-stone-800">{{ cinema.address }}</span>
+                            </div>
+                            {% if cinema.openingHours %}
+                                <div class="flex items-start">
+                                    <span class="font-bold text-stone-900 w-16 uppercase">Otwarte:</span>
+                                    <span class="text-stone-800">{{ cinema.openingHours }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <a href="#" class="block text-center border border-stone-900 bg-transparent hover:bg-stone-900 hover:text-white text-stone-900 text-xs font-bold uppercase tracking-wider py-3 transition-colors">
+                            Zobacz repertuar &rarr;
+                        </a>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
 {% endblock %}

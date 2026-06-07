@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Użytkownicy — Admin{% endblock %}
+
+{% block body %}
+<div class="border-b-2 border-stone-900 pb-6 mb-8 flex items-end justify-between">
+    <div>
+        <h1 class="section-header">Zarządzanie użytkownikami</h1>
+        <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+            Łącznie: <span class="font-bold text-stone-900">{{ users|length }}</span> kont w systemie
+        </p>
+    </div>
+    <a href="{{ path('app_admin_users_new') }}" class="btn-primary">
+        + Dodaj użytkownika
+    </a>
+</div>
+
+{% if users is empty %}
+    <div class="b-card text-center py-12 text-stone-400 font-mono text-sm">
+        Brak użytkowników w systemie.
+    </div>
+{% else %}
+    <div class="b-card p-0 overflow-hidden">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b-2 border-stone-900 bg-stone-50">
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">ID</th>
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Imię i nazwisko</th>
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">E-mail</th>
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Rola</th>
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Placówka</th>
+                    <th class="px-6 py-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr class="border-b border-stone-200 hover:bg-stone-50 transition-colors">
+                        <td class="px-6 py-4 font-mono text-xs text-stone-400">#{{ user.id }}</td>
+                        <td class="px-6 py-4 font-semibold">{{ user.firstName }} {{ user.lastName }}</td>
+                        <td class="px-6 py-4 font-mono text-xs">{{ user.email }}</td>
+                        <td class="px-6 py-4">
+                            {% set role = user.roles[0] ?? 'ROLE_USER' %}
+                            {% if role == 'ROLE_ADMIN' %}
+                                <span class="inline-block px-2 py-0.5 text-xs font-mono font-bold uppercase bg-stone-900 text-white">Admin</span>
+                            {% elseif role == 'ROLE_STAFF' %}
+                                <span class="inline-block px-2 py-0.5 text-xs font-mono font-bold uppercase bg-stone-700 text-white">Pracownik</span>
+                            {% else %}
+                                <span class="inline-block px-2 py-0.5 text-xs font-mono font-bold uppercase border border-stone-400 text-stone-600">Klient</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-xs text-stone-500">
+                            {{ user.assignedCinema ? user.assignedCinema.name : '—' }}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex items-center justify-end gap-3">
+                                <a href="{{ path('app_admin_users_edit', {id: user.id}) }}" class="btn-secondary !py-1 !px-3 text-xs">
+                                    Edytuj
+                                </a>
+                                {% if user != app.user %}
+                                    <form method="post" action="{{ path('app_admin_users_delete', {id: user.id}) }}" onsubmit="return confirm('Czy na pewno chcesz usunąć tego użytkownika?')">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                                        <button type="submit" class="text-xs font-mono font-bold uppercase text-red-700 hover:text-red-900 transition-colors">
+                                            Usuń
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+{% endblock %}

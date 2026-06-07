@@ -1,5 +1,87 @@
-@import "tailwindcss";
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #1c1917;
+    background-color: #1c1917;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.75rem 1.25rem;
+    transition:
+        color 0.15s ease-in-out,
+        background-color 0.15s ease-in-out;
+    cursor: pointer;
 
-body {
-    background-color: black !important;
+    &:hover {
+        background-color: #ffffff;
+        color: #1c1917;
+    }
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #78716c;
+    background-color: transparent;
+    color: #1c1917;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.75rem 1.25rem;
+    transition: background-color 0.15s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f5f5f4;
+    }
+}
+
+.form-input {
+    width: 100%;
+    background-color: #fafaf9;
+    border: 2px solid #1c1917;
+    padding: 0.75rem;
+    color: #1c1917;
+    font-family:
+        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875rem;
+
+    &:focus {
+        outline: none;
+        background-color: #ffffff;
+    }
+}
+
+.form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-family:
+        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1c1917;
+    margin-bottom: 0.5rem;
+}
+
+.b-card {
+    background-color: #ffffff;
+    border: 2px solid #1c1917;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-header {
+    font-size: 2.25rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    color: #1c1917;
+    margin-bottom: 0.5rem;
 }
