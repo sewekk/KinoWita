@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dodaj seans — Panel Pracownika{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto my-6">
+
+    <div class="border-b-2 border-stone-900 pb-6 mb-8">
+        <h1 class="section-header">Dodaj seans</h1>
+        <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+            Placówka: <span class="font-bold text-stone-900">{{ cinema.name }}</span>
+        </p>
+    </div>
+
+    <div class="b-card max-w-2xl">
+        {{ form_start(form) }}
+
+            <div class="space-y-5">
+                {{ form_row(form.movie) }}
+                {{ form_row(form.hall) }}
+                {{ form_row(form.startsAt) }}
+                {{ form_row(form.isActive) }}
+                {{ form_row(form.repeatDays) }}
+            </div>
+
+            <div class="flex items-center gap-3 mt-8">
+                <button type="submit" class="btn-primary">
+                    Dodaj seans
+                </button>
+
+                <a href="{{ path('app_staff_screenings') }}" class="btn-secondary">
+                    Anuluj
+                </a>
+            </div>
+
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{% endblock %}
