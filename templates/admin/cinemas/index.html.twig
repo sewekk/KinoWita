@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Placówki kin — Admin{% endblock %}
+
+{% block body %}
+<div class="border-b-2 border-stone-900 pb-6 mb-8 flex items-end justify-between">
+    <div>
+        <h1 class="section-header">Zarządzanie lokalizacjami kin</h1>
+        <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+            Łącznie: <span class="font-bold text-stone-900">{{ cinemas|length }}</span> placówek w systemie
+        </p>
+    </div>
+    <a href="{{ path('app_admin_cinemas_new') }}" class="btn-primary">
+        + Dodaj Kino
+    </a>
+</div>
+
+{% if cinemas is empty %}
+    <div class="b-card text-center py-12 text-stone-400 font-mono text-sm">
+        Brak placówek kin w systemie.
+    </div>
+{% else %}
+    <div class="b-card p-0 overflow-hidden">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b-2 border-stone-900 bg-stone-50">
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">ID</th>
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Nazwa</th>
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Miasto</th>
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Adres</th>
+                    <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Godziny otwarcia</th>
+                    <th class="px-6 py-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cinema in cinemas %}
+                    <tr class="border-b border-stone-200 hover:bg-stone-50 transition-colors">
+                        <td class="px-6 py-4 font-mono text-xs text-stone-400">#{{ cinema.id }}</td>
+                        <td class="px-6 py-4 font-semibold">{{ cinema.name }}</td>
+                        <td class="px-6 py-4">{{ cinema.city }}</td>
+                        <td class="px-6 py-4 text-xs text-stone-500">{{ cinema.address }}</td>
+                        <td class="px-6 py-4 text-xs text-stone-500">
+                            {{ cinema.openingHours ?: '—' }}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex items-center justify-end gap-3">
+                                <a href="{{ path('app_admin_cinemas_edit', {id: cinema.id}) }}" class="btn-secondary !py-1 !px-3 text-xs">
+                                    Edytuj
+                                </a>
+                                 <form method="post" action="{{ path('app_admin_cinemas_delete', {id: cinema.id}) }}" onsubmit="return confirm('Czy na pewno chcesz usunąć tę placówkę?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete_cinema_' ~ cinema.id) }}">
+
+                                    <button type="submit" class="text-xs font-mono font-bold uppercase text-red-700 hover:text-red-900 transition-colors">
+                                        Usuń
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+{% endblock %}
