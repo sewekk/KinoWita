@@ -57,13 +57,6 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 ```
 
-### 5. Uruchomienie migracji oraz seed danych testowych
-
-```bash
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load
-```
-
 ### 6. Zbudowanie styli Tailwind CSS
 
 ```bash
