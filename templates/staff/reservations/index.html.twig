@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rezerwacje — Panel Pracownika{% endblock %}
+
+{% block body %}
+<div class="max-w-6xl mx-auto my-6">
+
+    <div class="border-b-2 border-stone-900 pb-6 mb-8">
+        <h1 class="section-header">Rezerwacje</h1>
+        <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+            Placówka: <span class="font-bold text-stone-900">{{ cinema.name }}</span>
+        </p>
+    </div>
+
+    {% if reservations is empty %}
+        <div class="b-card text-center py-12 text-stone-400 font-mono text-sm">
+            Brak rezerwacji w tej placówce.
+        </div>
+    {% else %}
+        <div class="space-y-6">
+            {% for reservation in reservations %}
+                {% set screening = reservation.screening %}
+                {% set seats = reservationSeats[reservation.id] ?? [] %}
+
+                <div class="b-card">
+                    <div class="flex items-start justify-between gap-6 border-b border-stone-200 pb-5 mb-5">
+                        <div>
+                            <h2 class="text-2xl font-black uppercase tracking-tight text-stone-900">
+                                {{ screening.movie.name }}
+                            </h2>
+
+                            <p class="font-mono text-xs text-stone-500 uppercase tracking-wider mt-1">
+                                {{ screening.startsAt|date('d.m.Y H:i') }} — {{ screening.hall.name }}
+                            </p>
+
+                            <p class="font-mono text-xs text-stone-500 uppercase tracking-wider mt-1">
+                                Klient: <span class="font-bold text-stone-900">{{ reservation.user.firstName }} {{ reservation.user.lastName }}</span>
+                                / {{ reservation.user.email }}
+                            </p>
+                        </div>
+
+                        {% if reservation.status == 'reserved' %}
+                            <span class="inline-block px-2 py-0.5 text-xs font-mono font-bold uppercase bg-stone-900 text-white">
+                                Aktywna
+                            </span>
+                        {% else %}
+                            <span class="inline-block px-2 py-0.5 text-xs font-mono font-bold uppercase border border-stone-400 text-stone-600">
+                                Anulowana
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="font-mono text-xs uppercase tracking-wider text-stone-600">
+                        <span class="font-bold text-stone-900">Miejsca:</span>
+
+                        {% if seats is empty %}
+                            <span class="text-stone-400">Brak aktywnych miejsc</span>
+                        {% else %}
+                            {% for seat in seats %}
+                                <span class="inline-block border border-stone-900 px-2 py-1 ml-1">
+                                    Rząd {{ seat.rowNumber }}, miejsce {{ seat.seatNumber }}
+                                </span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <p class="font-mono text-xs text-stone-400 uppercase tracking-wider mt-4">
+                        Utworzono: {{ reservation.createdAt|date('d.m.Y H:i') }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="mt-8">
+        <a href="{{ path('app_staff_dashboard') }}" class="btn-secondary">
+            Wróć do panelu
+        </a>
+    </div>
+
+</div>
+{% endblock %}
