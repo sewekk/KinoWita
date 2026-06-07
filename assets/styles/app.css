@@ -1,87 +1,47 @@
 .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #1c1917;
-    background-color: #1c1917;
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 0.75rem 1.25rem;
-    transition:
-        color 0.15s ease-in-out,
-        background-color 0.15s ease-in-out;
-    cursor: pointer;
+    @apply inline-flex items-center justify-center border-2 border-stone-900 bg-stone-900 text-white text-xs font-bold uppercase tracking-widest px-5 py-3 transition-colors duration-150 ease-in-out cursor-pointer;
+}
 
-    &:hover {
-        background-color: #ffffff;
-        color: #1c1917;
-    }
+.btn-primary:hover {
+    @apply bg-white text-stone-900;
 }
 
 .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #78716c;
-    background-color: transparent;
-    color: #1c1917;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 0.75rem 1.25rem;
-    transition: background-color 0.15s ease-in-out;
-    cursor: pointer;
+    @apply inline-flex items-center justify-center border border-stone-500 bg-transparent text-stone-900 text-xs font-bold uppercase tracking-widest px-5 py-3 transition-colors duration-150 ease-in-out cursor-pointer;
+}
 
-    &:hover {
-        background-color: #f5f5f4;
-    }
+.btn-secondary:hover {
+    @apply bg-stone-100;
 }
 
 .form-input {
-    width: 100%;
-    background-color: #fafaf9;
-    border: 2px solid #1c1917;
-    padding: 0.75rem;
-    color: #1c1917;
-    font-family:
-        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.875rem;
+    @apply w-full bg-stone-50 border-2 border-stone-900 p-3 text-stone-900 font-mono text-sm;
+}
 
-    &:focus {
-        outline: none;
-        background-color: #ffffff;
-    }
+.form-input:focus {
+    @apply outline-none bg-white;
 }
 
 .form-label {
-    display: block;
-    font-size: 0.75rem;
-    font-family:
-        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #1c1917;
-    margin-bottom: 0.5rem;
+    @apply block text-xs font-mono font-bold uppercase tracking-wider text-stone-900 mb-2;
 }
 
 .b-card {
-    background-color: #ffffff;
-    border: 2px solid #1c1917;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
+    @apply bg-white border-2 border-stone-900 p-6 flex flex-col;
 }
 
 .section-header {
-    font-size: 2.25rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -0.025em;
-    color: #1c1917;
-    margin-bottom: 0.5rem;
+    @apply text-4xl font-black uppercase -tracking-wide text-stone-900 mb-2;
+}
+
+.b-card form select,
+.b-card form input[type="datetime-local"],
+.b-card form input[type="number"] {
+    @apply w-full bg-stone-50 border-2 border-stone-900 p-3 text-stone-900 font-mono text-sm;
+}
+
+.b-card form select:focus,
+.b-card form input[type="datetime-local"]:focus,
+.b-card form input[type="number"]:focus {
+    @apply outline-none bg-white;
 }
