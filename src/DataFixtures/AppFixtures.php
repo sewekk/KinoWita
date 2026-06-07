@@ -39,7 +39,6 @@ class AppFixtures extends Fixture
 
         $createdCinemas = [];
 
-        // 2. Loop and Persist Cinemas
         foreach ($cinemasData as $city => $data) {
             $cinema = new Cinema();
             $cinema->setName($data['name']);
@@ -51,7 +50,6 @@ class AppFixtures extends Fixture
             $createdCinemas[$city] = $cinema; 
         }
 
-        // 3. Define Users Data
         $usersData = [
             [
                 'email' => 'admin@wsb.pl',

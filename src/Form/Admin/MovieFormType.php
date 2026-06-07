@@ -26,6 +26,7 @@ class MovieFormType extends AbstractType
             ->add('isActive', CheckboxType::class, [
                 'label' => 'Film aktywny',
                 'required' => false,
+                ''
             ])
         ;
     }
@@ -34,6 +35,7 @@ class MovieFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Movie::class,
+            
         ]);
     }
 }

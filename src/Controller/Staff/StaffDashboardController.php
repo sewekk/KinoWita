@@ -2,6 +2,7 @@
 
 namespace App\Controller\Staff;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,6 +15,14 @@ class StaffDashboardController extends AbstractController
     #[Route('', name: 'app_staff_dashboard')]
     public function index(): Response
     {
-        return $this->render('staff/dashboard.html.twig');
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
+
+        return $this->render('staff/dashboard.html.twig', [
+             'assignedCinema' => $user->getAssignedCinema(),
+        ]);
     }
 }

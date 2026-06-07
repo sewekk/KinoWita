@@ -21,7 +21,6 @@ export default class extends Controller {
             if (select) select.value = '';
         }
 
-        // clear client-side error when role changes
         this.#clearError();
     }
 

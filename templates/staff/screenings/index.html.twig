@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Seanse — Panel Pracownika{% endblock %}
+
+{% block body %}
+<div class="max-w-6xl mx-auto my-6">
+
+    <div class="border-b-2 border-stone-900 pb-6 mb-8 flex items-end justify-between">
+        <div>
+            <h1 class="section-header">Seanse</h1>
+            <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+                Placówka: <span class="font-bold text-stone-900">{{ cinema.name }}</span>
+            </p>
+        </div>
+
+        <a href="{{ path('app_staff_screenings_new') }}" class="btn-primary">
+            + Dodaj seans
+        </a>
+    </div>
+
+    {% if screenings is empty %}
+        <div class="b-card text-center py-12 text-stone-400 font-mono text-sm">
+            Brak seansów w tej placówce.
+        </div>
+    {% else %}
+        <div class="b-card p-0 overflow-hidden">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b-2 border-stone-900 bg-stone-50">
+                        <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">ID</th>
+                        <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Film</th>
+                        <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Sala</th>
+                        <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Data</th>
+                        <th class="text-left px-6 py-3 font-mono text-xs uppercase tracking-widest text-stone-500">Status</th>
+                        <th class="px-6 py-3"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for screening in screenings %}
+                        <tr class="border-b border-stone-200 hover:bg-stone-50 transition-colors">
+                            <td class="px-6 py-4 font-mono text-xs text-stone-400">#{{ screening.id }}</td>
+                            <td class="px-6 py-4 font-semibold">{{ screening.movie.name }}</td>
+                            <td class="px-6 py-4 font-mono text-xs">{{ screening.hall.name }}</td>
+                            <td class="px-6 py-4 font-mono text-xs">
+                                {{ screening.startsAt|date('d.m.Y H:i') }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if screening.active %}
+                                    <span class="inline-block px-2 py-0.5 text-xs font-mono font-bold uppercase bg-stone-900 text-white">
+                                        Aktywny
+                                    </span>
+                                {% else %}
+                                    <span class="inline-block px-2 py-0.5 text-xs font-mono font-bold uppercase border border-stone-400 text-stone-600">
+                                        Nieaktywny
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex items-center justify-end gap-3">
+                                    <a href="{{ path('app_staff_screenings_edit', {id: screening.id}) }}" class="btn-secondary !py-1 !px-3 text-xs">
+                                        Edytuj
+                                    </a>
+
+                                    <form method="post" action="{{ path('app_staff_screenings_delete', {id: screening.id}) }}" onsubmit="return confirm('Czy na pewno chcesz usunąć ten seans?')">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_screening_' ~ screening.id) }}">
+
+                                        <button type="submit" class="text-xs font-mono font-bold uppercase text-red-700 hover:text-red-900 transition-colors">
+                                            Usuń
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    <div class="mt-6">
+        <a href="{{ path('app_staff_dashboard') }}" class="btn-secondary">
+            Wróć do panelu
+        </a>
+    </div>
+
+</div>
+{% endblock %}
