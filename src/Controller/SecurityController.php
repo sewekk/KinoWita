@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Exception\UserAlreadyExistsException;
+use App\Form\User\RegisterFormType;
+use App\Services\UserRegistrationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -17,6 +22,38 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+     #[Route(path: '/register', name: 'app_register', methods: ['GET', 'POST'])]
+    public function register(
+        Request $request,
+        UserRegistrationService $registrationService,
+    ): Response {
+        $user = new User();
+
+        $form = $this->createForm(RegisterFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $registrationService->register(
+                    $user,
+                    (string) $form->get('plainPassword')->getData()
+                );
+
+                $this->addFlash('success', 'Konto zostało utworzone. Możesz się zalogować.');
+
+                return $this->redirectToRoute('app_login');
+            } catch (UserAlreadyExistsException $exception) {
+                $this->addFlash('error', $exception->getMessage());
+
+                return $this->redirectToRoute('app_register');
+            }
+        }
+
+        return $this->render('security/register.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
