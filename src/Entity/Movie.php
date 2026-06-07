@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MovieRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Enum\MovieCategory;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 class Movie
@@ -21,6 +22,9 @@ class Movie
 
     #[ORM\Column(length: 255)]
     private ?string $ageCategory = null;
+
+    #[ORM\Column(enumType: MovieCategory::class)]
+    private ?MovieCategory $category = null;
 
     public function getId(): ?int
     {
@@ -59,6 +63,18 @@ class Movie
     public function setAgeCategory(string $ageCategory): static
     {
         $this->ageCategory = $ageCategory;
+
+        return $this;
+    }
+
+    public function getCategory(): ?MovieCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(MovieCategory $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
