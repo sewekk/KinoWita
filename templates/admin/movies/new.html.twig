@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dodaj film — Admin{% endblock %}
+
+{% block body %}
+<div class="border-b-2 border-stone-900 pb-6 mb-8">
+    <h1 class="section-header">Dodaj film</h1>
+    <p class="text-stone-500 font-mono text-xs uppercase tracking-wider mt-1">
+        Utwórz nowy film w systemie
+    </p>
+</div>
+
+<div class="b-card max-w-2xl">
+    {{ form_start(form) }}
+
+        <div class="space-y-5">
+            <div>
+                {{ form_label(form.name, null, {
+                    label_attr: {
+                        class: 'block font-mono text-xs uppercase tracking-widest text-stone-500 mb-2'
+                    }
+                }) }}
+                {{ form_widget(form.name, {
+                    attr: {
+                        class: 'w-full border-2 border-stone-900 px-4 py-2 text-sm'
+                    }
+                }) }}
+                {{ form_errors(form.name) }}
+            </div>
+
+            <div>
+                {{ form_label(form.ageCategory, null, {
+                    label_attr: {
+                        class: 'block font-mono text-xs uppercase tracking-widest text-stone-500 mb-2'
+                    }
+                }) }}
+                {{ form_widget(form.ageCategory, {
+                    attr: {
+                        class: 'w-full border-2 border-stone-900 px-4 py-2 text-sm',
+                        placeholder: 'np. +16'
+                    }
+                }) }}
+                {{ form_errors(form.ageCategory) }}
+            </div>
+
+            <label class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-stone-600">
+                {{ form_widget(form.isActive, {
+                    attr: {
+                        class: 'w-4 h-4'
+                    }
+                }) }}
+                {{ form.isActive.vars.label }}
+            </label>
+            {{ form_errors(form.isActive) }}
+        </div>
+
+        <div class="flex items-center gap-3 mt-8">
+            <button type="submit" class="btn-primary">
+                Dodaj film
+            </button>
+
+            <a href="{{ path('app_admin_movies') }}" class="btn-secondary">
+                Anuluj
+            </a>
+        </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}
