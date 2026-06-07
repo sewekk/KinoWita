@@ -12,6 +12,90 @@ Technologie: PHP 8.2, Symfony 7.4, Doctrine ORM, MariaDB/MySQL, Twig, Tailwind C
 
 - Adrian Wojciechowski 167079
 
+## Uruchomienie projektu lokalnie
+
+### Wymagania
+
+Do uruchomienia projektu potrzebne są:
+
+- PHP 8.2+
+- Composer
+- MySQL / MariaDB
+- Symfony CLI opcjonalnie
+
+Projekt nie wymaga Node.js. Style Tailwind CSS są budowane przez Symfony TailwindBundle.
+
+---
+
+### 1. Sklonowanie repozytorium
+
+```bash
+git clone ADRES_REPOZYTORIUM
+cd KinoWita
+```
+
+### 2. Instalacja zależności PHP
+
+```bash
+composer install
+```
+
+### 3. Konfiguracja bazy danych
+
+Utwórz plik .env w głównym katalogu projektu na podstawie .env.example
+
+### 4. Utworzenie bazy danych
+
+```bash
+php bin/console doctrine:database:create
+```
+
+### 5. Uruchomienie migracji oraz seed danych testowych
+
+```bash
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
+```
+
+### 5. Uruchomienie migracji oraz seed danych testowych
+
+```bash
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
+```
+
+### 6. Zbudowanie styli Tailwind CSS
+
+```bash
+php bin/console tailwind:build
+```
+
+### 7. Uruchomienie aplikacji
+
+```bash
+php -S 127.0.0.1:8000 -t public
+```
+
+Opcjonalnie, jeśli zainstalowany jest Symfony CLI:
+
+```bash
+symfony server:start
+```
+
+### 8. Pełna kolejność komend
+
+```bash
+    composer install
+
+    php bin/console doctrine:database:create
+    php bin/console doctrine:migrations:migrate
+    php bin/console doctrine:fixtures:load
+
+    php bin/console tailwind:build
+
+    php -S 127.0.0.1:8000 -t public
+```
+
 ## Opis
 
 Aplikacja obsługuje sieć kin: kilka placówek, z których każda ma własne sale i własny harmonogram seansów. Niezalogowany użytkownik przegląda repertuar i szczegóły filmów. Zalogowany klient rezerwuje miejsca z mapy sali i zarządza swoimi rezerwacjami. Pracownik prowadzi ofertę przypisanej placówki (seanse, sale, miejsca), a administrator nadzoruje całą sieć: filmy, placówki i konta użytkowników.
