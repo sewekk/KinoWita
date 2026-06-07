@@ -137,7 +137,29 @@ Zarządzanie seansami (`/staff/screenings`):
 
 ![Zarządzanie seansami](docs/screenshots/image-14.png)
 
+Zarządzanie rezerwacjami z poziomu pracownika placówki (`/staff/screenings`):
 
+![Zarządzanie seansami](docs/screenshots/image-15.png)
+
+Widok filmów w danej placówce - mozliwosc filtracji oraz szukania (`cinemas/{id}/repertoire`):
+
+![Zarządzanie seansami](docs/screenshots/image-16.png)
+
+Rezerwacja miejsca na sali - niezalogowany uzytkownik (`/screenings/{id}/booking`):
+
+![Zarządzanie seansami](docs/screenshots/image-17.png)
+
+Rezerwacja miejsca na sali - zalogowany uzytkownik (`/screenings/{id}/booking`):
+
+![Zarządzanie seansami](docs/screenshots/image-18.png)
+
+Rezerwacja miejsca na sali - zalogowany uzytkownik (`/screenings/{id}/booking`):
+
+![Zarządzanie seansami](docs/screenshots/image-18.png)
+
+Widok moich rezerwacji (`user/reservations`):
+
+![Zarządzanie seansami](docs/screenshots/image-19.png)
 
 ## Struktura kodu
 
@@ -205,6 +227,28 @@ MariaDB/MySQL przez Doctrine ORM. Schemat wynika z atrybutów na encjach w `src/
 - `starts_at` - data i godzina rozpoczęcia
 - `is_active`
 
+**`reservation`** - rezerwacje użytkowników.
+
+- `id`
+- `screening_id` (FK do `screening`, not null)
+- `user_id` (FK do `user`, not null)
+- `status` - status rezerwacji, np. `reserved`, `cancelled`
+- `created_at` - data utworzenia rezerwacji
+
+**`reservation_seat`** - miejsca przypisane do konkretnej rezerwacji.
+
+- `id`
+- `reservation_id` (FK do `reservation`, not null)
+- `screening_id` (FK do `screening`, not null)
+- `rowNumber` - numer rzędu
+- `seatNumber` - numer miejsca
+
+Tabela posiada unikalne ograniczenie:
+
+- `screening_id + rowNumber + seatNumber`
+
+Dzięki temu jedno miejsce na konkretnym seansie nie może zostać zarezerwowane dwa razy.
+
 ### Relacje
 
 - Placówka (`cinema`) ma wiele sal (`cinema_hall`) i wiele seansów (`screening`).
@@ -212,5 +256,10 @@ MariaDB/MySQL przez Doctrine ORM. Schemat wynika z atrybutów na encjach w `src/
 - Sala (`cinema_hall`) ma wiele seansów.
 - Seans łączy film, placówkę i salę (trzy relacje do jednego rekordu).
 - Pracownik (`user`) jest przypisany do jednej placówki; klient i administrator nie mają przypisania.
+- Użytkownik (`user`) może mieć wiele rezerwacji (`reservation`).
+- Seans (`screening`) może mieć wiele rezerwacji (`reservation`).
+- Rezerwacja (`reservation`) może zawierać wiele miejsc (`reservation_seat`).
+- Miejsce rezerwacji (`reservation_seat`) należy do jednej rezerwacji i jednego seansu.
+- Anulowanie rezerwacji zmienia jej status na `cancelled` oraz zwalnia przypisane miejsca.
 
-Mapa miejsc na sali nie jest osobną tabelą: liczy się ją z `rows_count` i `seats_per_row` danej sali.
+Mapa miejsc na sali nie jest osobną tabelą: liczy się ją z `rows_count` i `seats_per_row` danej sali. Osobno zapisywane są tylko miejsca zarezerwowane w tabeli `reservation_seat`.
