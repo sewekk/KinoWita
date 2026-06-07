@@ -21,9 +21,17 @@ class CinemaRepository extends ServiceEntityRepository
      */
     public function findAllOrderedByCity(): array
     {
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.city', 'ASC')
-            ->addOrderBy('c.name', 'ASC')
+        return $this->createQueryBuilder('cinema')
+            ->orderBy('cinema.city', 'ASC')
+            ->addOrderBy('cinema.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllOrderedByName(): array
+    {
+        return $this->createQueryBuilder('cinema')
+            ->orderBy('cinema.id', 'ASC')
             ->getQuery()
             ->getResult();
     }
