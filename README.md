@@ -181,64 +181,7 @@ System ról decyduje o tym, co kto widzi i może zrobić. Dostęp do sekcji `/da
 4. **Walidacja danych** - sprawdzanie poprawności w formularzach i encjach przed zapisem do bazy.
 5. **Interfejs po polsku** - cała aplikacja w języku polskim.
 
-## Uruchomienie
-
-Wymagane: PHP 8.2+, Composer, MariaDB/MySQL. Symfony CLI jest opcjonalny.
-Projekt nie wymaga Node.js ani npm.
-
-Instalacja zależności:
-
-```
-composer install
-```
-
-Konfiguracja połączenia z bazą w `.env` (lub `.env.local`), domyślnie:
-
-```
-DATABASE_URL="mysql://root:@127.0.0.1:3306/kinowita?serverVersion=8.0.32&charset=utf8mb4"
-```
-
-Wariant z hasłem:
-
-```
-DATABASE_URL="mysql://root:HASLO@127.0.0.1:3306/kinowita?serverVersion=8.0.32&charset=utf8mb4"
-```
-
-W pliku `.env` ustaw też `APP_SECRET`. Możesz wygenerować go poleceniem:
-
-```
-php -r "echo bin2hex(random_bytes(16)).PHP_EOL;"
-```
-
-Przygotowanie assetów:
-
-```
-php bin/console importmap:install
-php bin/console tailwind:build
-php bin/console asset-map:compile
-```
-
-Utworzenie bazy, migracje i dane startowe:
-
-```
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load
-```
-
-Start serwera:
-
-```
-php -S 127.0.0.1:8000 -t public
-```
-
-Jeśli style albo JavaScript nie ładują się przy `php -S`, uruchom ponownie:
-
-```
-php bin/console tailwind:build
-php bin/console asset-map:compile
-php bin/console cache:clear
-```
+## Konta startowe
 
 Konta startowe z fixtures (hasło dla wszystkich: `qwerty`):
 
